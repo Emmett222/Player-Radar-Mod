@@ -1,7 +1,12 @@
 package net.emmett222.playerradarmod.items;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -32,6 +37,10 @@ public class PlayerRadar extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
 
+        if (pLevel.getServer() == null) {
+            return super.use(pLevel, pPlayer, pUsedHand);
+        }
+
         if (pPlayer.isCrouching()) {
             changePlayer(pPlayer, pLevel);
         } else {
@@ -53,12 +62,20 @@ public class PlayerRadar extends Item {
             return;
         }
 
-        this.trackedPlayer = world.players().get(nextTrackedPlayerIndex);
-        nextTrackedPlayerIndex += 1;
-        if (nextTrackedPlayerIndex > world.players().size() + 1) {
-            nextTrackedPlayerIndex = 0;
-        }
-        Component changeComponent = Component.translatable("Now tracking: " + this.trackedPlayer.getName());
+        List<ServerPlayer> players = world.getServer().getPlayerList().getPlayers(); 
+
+        // Create a copy so we don't mess up the actual server list
+        //List<ServerPlayer> sortedPlayers = new ArrayList<>(players = world.getServer().getPlayerList().getPlayers());
+
+        // Sort by name
+        players.sort(Comparator.comparing(p -> p.getName().getString().toLowerCase()));
+
+        // Use modulo to stay within bounds: (current + 1) % total
+        nextTrackedPlayerIndex = (nextTrackedPlayerIndex + 1) % players.size();
+
+        this.trackedPlayer = players.get(nextTrackedPlayerIndex);
+        
+        Component changeComponent = Component.translatable("Now tracking: " + this.trackedPlayer.getName().getString());
         user.displayClientMessage(changeComponent, true);
     }
 

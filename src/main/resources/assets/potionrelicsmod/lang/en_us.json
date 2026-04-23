@@ -1,0 +1,7 @@
+{
+    "item.playerradarmod.playertracker": "Player Tracker",
+
+    "tooltip.playerradarmod.playertracker": "Right click to track. Shift + Right click to change tracked player.",
+
+    "creativetab.playerradarmod": "Player Tracker"
+}

@@ -5,6 +5,7 @@ import com.mojang.logging.LogUtils;
 import net.emmett222.playerradarmod.configs.ModConfigs;
 import net.emmett222.playerradarmod.items.ModCreativeModeTabs;
 import net.emmett222.playerradarmod.items.ModItems;
+import net.emmett222.playerradarmod.networking.ModMessages;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -32,6 +33,8 @@ public class PlayerRadarMod {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ModConfigs.SPEC);
         
         ModCreativeModeTabs.register(modEventBus);
+
+        ModMessages.register();
 
         ModItems.register(modEventBus);
 

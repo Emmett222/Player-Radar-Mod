@@ -14,7 +14,7 @@ public class ModCreativeModeTabs {
         DeferredRegister.create(Registries.CREATIVE_MODE_TAB, PlayerRadarMod.MOD_ID);
 
     public static final RegistryObject<CreativeModeTab> PLAYER_TRACKER_MOD = CREATIVE_MODE_TABS.register("player_radar_tab",
-        () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.TABICON.get()))
+        () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.PLAYERRADAR.get()))
         .title(Component.translatable("creativetab.playerradarmod"))
         .displayItems((pParameters, pOutput) -> {
             pOutput.accept(ModItems.PLAYERTRACKER.get());

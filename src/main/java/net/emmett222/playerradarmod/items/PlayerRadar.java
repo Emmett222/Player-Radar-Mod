@@ -25,9 +25,10 @@ public class PlayerRadar extends Item {
 
     public Player trackedPlayer;
     private int nextTrackedPlayerIndex;
+    private Random rand = new Random();
 
     public PlayerRadar(Properties pProperties) {
-        super(pProperties);
+        super(pProperties.durability(4));
     }
 
     @Override
@@ -81,8 +82,19 @@ public class PlayerRadar extends Item {
             return;
         }
 
-        user.displayClientMessage(Component.translatable(this.trackedPlayer.getName().getString() + " is at: X:" + trackedPlayer.getX() + " Z:" + trackedPlayer.getY()), true);
+        int newX;
+        int newZ;
+        
+        newX = this.trackedPlayer.getX() + (rand.nextInt(101) - 50);
+        newZ = this.trackedPlayer.getZ() + (rand.nextInt(101) - 50);
 
+        Point topLeftCorner = new Point(newX-50, newZ + 50);
+        Point bottomRightCorner = new Point(newX+50, newZ-50);
+
+
+        String chatMessage = String.format(this.trackedPlayer.getName().getString() + "is somewhere withing zone: X(%d to %d) | Z(%d to %d)", topLeftCorner.getX(), bottomRightCorner.getX(), topLeftCorner.getY(), bottomRightCorner.getY());
+        user.displayClientMessage(Component.translatable(chatMessage, true));
+        pPlayer.getItemInHand(pUsedHand).hurtAndBreak(1, pPlayer, (p) -> p.broadcastBreakEvent(pUsedHand));
         // Manual refresh if the user just right-clicks without shifting.
         syncTargetCoordinates(user);
     }
@@ -96,5 +108,14 @@ public class PlayerRadar extends Item {
                     new SyncPlayerPosPacket(this.trackedPlayer.getX(), this.trackedPlayer.getZ()),
                     serverUser);
         }
+    }
+
+    public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents,
+            TooltipFlag pIsAdvanced) {
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+
+        Component tooltipComp = Component.translatable("tooltip.playerradarmod.playertracker")
+                .withStyle(ChatFormatting.GRAY);
+        pTooltipComponents.add(tooltipComp);
     }
 }

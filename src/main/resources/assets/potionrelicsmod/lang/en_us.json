@@ -1,7 +1,7 @@
 {
     "item.playerradarmod.playertracker": "Player Tracker",
 
-    "tooltip.playerradarmod.playertracker": "Right click to track. Shift + Right click to change tracked player.",
+    "tooltip.playerradarmod.playertracker": "Right click to track. Each track takes 1 durability. Radar has 4 durability. Shift + Right click to change tracked player.",
 
     "creativetab.playerradarmod": "Player Tracker"
 }

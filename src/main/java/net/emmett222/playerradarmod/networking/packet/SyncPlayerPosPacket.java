@@ -31,8 +31,8 @@ public class SyncPlayerPosPacket {
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            // HERE: Update your radar's client-side variables
-            // Example: ClientRadarData.setTargetPos(x, z);
+            // Update your radar's client-side variables
+            ClientRadarData.setTargetPos(x, z);
         });
         return true;
     }
